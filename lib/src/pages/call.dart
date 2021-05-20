@@ -57,6 +57,7 @@ class _CallPageState extends State<CallPage> {
 
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
+    // ignore: deprecated_member_use
     await _engine.enableWebSdkInteroperability(true);
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(1920, 1080);
@@ -67,7 +68,7 @@ class _CallPageState extends State<CallPage> {
   /// Create agora sdk instance and initialize
   Future<void> _initAgoraRtcEngine() async {
     _engine = await RtcEngine.create(APP_ID);
-    await _engine.enableVideo();
+    // await _engine.enableVideo();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(widget.role);
   }
@@ -186,7 +187,7 @@ class _CallPageState extends State<CallPage> {
             child: Icon(
               muted ? Icons.mic_off : Icons.mic,
               color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
+              size: 35.0,
             ),
             shape: CircleBorder(),
             elevation: 2.0,
@@ -205,18 +206,18 @@ class _CallPageState extends State<CallPage> {
             fillColor: Colors.redAccent,
             padding: const EdgeInsets.all(15.0),
           ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
+          // RawMaterialButton(
+          //   onPressed: _onSwitchCamera,
+          //   child: Icon(
+          //     Icons.switch_camera,
+          //     color: Colors.blueAccent,
+          //     size: 20.0,
+          //   ),
+          //   shape: CircleBorder(),
+          //   elevation: 2.0,
+          //   fillColor: Colors.white,
+          //   padding: const EdgeInsets.all(12.0),
+          // )
         ],
       ),
     );
@@ -291,7 +292,7 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agora Flutter QuickStart'),
+        title: Text('Test'),
       ),
       backgroundColor: Colors.black,
       body: Center(
