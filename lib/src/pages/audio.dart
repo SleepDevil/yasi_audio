@@ -6,12 +6,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'call.dart';
 
-class VideoPage extends StatefulWidget {
+class AudioPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => VideoState();
+  State<StatefulWidget> createState() => AudioState();
 }
 
-class VideoState extends State<VideoPage> {
+class AudioState extends State<AudioPage> {
   /// create a channelController to retrieve text value
   final _channelController = TextEditingController();
 
@@ -31,7 +31,7 @@ class VideoState extends State<VideoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Test'),
+        title: Text('口语'),
       ),
       body: Center(
         child: Container(
@@ -45,42 +45,13 @@ class VideoState extends State<VideoPage> {
                       child: TextField(
                     controller: _channelController,
                     decoration: InputDecoration(
-                      errorText:
-                          _validateError ? 'Channel name is mandatory' : null,
+                      errorText: _validateError ? '请输入房间号' : null,
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(width: 1),
                       ),
-                      hintText: 'Channel name',
+                      hintText: '请输入房间号',
                     ),
                   ))
-                ],
-              ),
-              Column(
-                children: [
-                  ListTile(
-                    title: Text(ClientRole.Broadcaster.toString()),
-                    leading: Radio(
-                      value: ClientRole.Broadcaster,
-                      groupValue: _role,
-                      onChanged: (ClientRole value) {
-                        setState(() {
-                          _role = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(ClientRole.Audience.toString()),
-                    leading: Radio(
-                      value: ClientRole.Audience,
-                      groupValue: _role,
-                      onChanged: (ClientRole value) {
-                        setState(() {
-                          _role = value;
-                        });
-                      },
-                    ),
-                  )
                 ],
               ),
               Padding(
@@ -90,7 +61,7 @@ class VideoState extends State<VideoPage> {
                     Expanded(
                       child: RaisedButton(
                         onPressed: onJoin,
-                        child: Text('Join'),
+                        child: Text('进入'),
                         color: Colors.blueAccent,
                         textColor: Colors.white,
                       ),
@@ -113,8 +84,6 @@ class VideoState extends State<VideoPage> {
           : _validateError = false;
     });
     if (_channelController.text.isNotEmpty) {
-      // await for camera and mic permissions before pushing video page
-      await _handleCameraAndMic(Permission.camera);
       await _handleCameraAndMic(Permission.microphone);
       // push video page with given channel name
       await Navigator.push(
