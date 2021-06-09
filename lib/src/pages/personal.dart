@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:agora_flutter_quickstart/src/pages/login.dart';
+import 'package:agora_flutter_quickstart/src/utils/api.dart';
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
 import 'package:agora_flutter_quickstart/src/utils/img_compress.dart';
 import 'package:dio/dio.dart';
@@ -23,21 +24,6 @@ class _PersonalPageState extends State<PersonalPage> {
   final picker = ImagePicker();
   File _image;
   dynamic userInfo;
-  Future<Object> getUserInfo() async {
-    var prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('token') == null) {
-      showToast('请先登录');
-      return null;
-    }
-    var res = await dio
-        .post('/checktoken', data: {'token': prefs.getString('token')});
-    await prefs.setString('nickname', res.data['data']['nickName']);
-    await prefs.setString('username', res.data['data']['userName']);
-    await prefs.setString('headerimg', res.data['data']['headerImg']);
-    await prefs.setString('oralscore', res.data['data']['oralscore']);
-    userInfo = res.data['data'];
-    return userInfo;
-  }
 
   @override
   void initState() {

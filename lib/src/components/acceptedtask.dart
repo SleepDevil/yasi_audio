@@ -57,6 +57,9 @@ class _AcceptedTaskState extends State<AcceptedTask> {
 
   @override
   Widget build(BuildContext context) {
+    BattleTime =
+        DateTime.parse(BattleTime).toLocal().toString().substring(0, 19);
+    print(BattleTime);
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -95,9 +98,7 @@ class _AcceptedTaskState extends State<AcceptedTask> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '预定时间：' +
-                      formatDate(DateTime.parse(BattleTime),
-                          [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]),
+                  '预定时间：' + BattleTime,
                   style: TextStyle(fontSize: 12),
                 ),
                 Container(

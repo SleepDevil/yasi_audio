@@ -31,17 +31,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         });
         return;
       }
-      // var bookroomres = await dio.post('/room', data: {
-      //   'Founder': prefs.getString('nickname'),
-      //   'RoomId': roomid.text,
-      //   'BattleTime': currentTime
-      // });
-      // if (bookroomres.data['data']
-      //     .toString()
-      //     .startsWith('Error 1062: Duplicate entry')) {
-      //   showToast('该房间号已存在，请更换后重试');
-      //   return;
-      // }
+      print(currentTime);
       var res = await dio.post('/task', data: {
         'CreatedBy': prefs.getString('nickname'),
         'CreatedHead': prefs.getString('headerimg'),
@@ -70,7 +60,6 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(currentTime);
     return Scaffold(
       appBar: AppBar(
         title: Text('发布任务'),
@@ -188,6 +177,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                                   DateTime.parse(currentTime),
                                               onDateTimeChanged: (date) {
                                                 setState(() {
+                                                  print(date);
                                                   currentTime = date
                                                           .toString()
                                                           .substring(0, 16) +

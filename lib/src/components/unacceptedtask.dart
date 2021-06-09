@@ -1,3 +1,4 @@
+import 'package:agora_flutter_quickstart/src/pages/login.dart';
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
 import 'package:agora_flutter_quickstart/src/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -72,13 +73,29 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
 
   void accept() async {
     var prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('nickname') == null) {
+      showToast('请先登录！');
+      await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LoginPage();
+      })).then((value) => setState(() {}));
+      return;
+    }
     if (prefs.getString('nickname') == CreatedBy) {
       showToast('不能接受自己的任务哦');
+      return;
     }
-    var res = await dio.post('/task/accept',
-        data: {'RoomId': RoomId, 'AcceptedBy': prefs.getString('nickname')});
-    print(res);
-    showDialog(
+    BattleTime =
+        DateTime.parse(BattleTime).toLocal().toString().substring(0, 19);
+    var res = await dio.post('/room', data: {
+      'RoomId': RoomId,
+      'AcceptedBy': prefs.getString('nickname'),
+      'BattleTime': BattleTime,
+      'Founder': CreatedBy
+    });
+    if (res.data['code'] != 0) {
+      showToast(res.data['msg']);
+    }
+    await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
@@ -102,7 +119,6 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
                   Navigator.of(context).pop(true); //关闭对话框
                   await Clipboard.setData(
                       ClipboardData(text: formatedBattletime + '   ' + RoomId));
-                  setState(() {});
                 },
                 child: Text('复制并继续'),
               ),
@@ -113,6 +129,9 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
 
   @override
   Widget build(BuildContext context) {
+    BattleTime =
+        DateTime.parse(BattleTime).toLocal().toString().substring(0, 19);
+
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(
@@ -151,9 +170,7 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '预定时间：' +
-                      formatDate(DateTime.parse(BattleTime),
-                          [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]),
+                  '预定时间：' + BattleTime,
                   style: TextStyle(fontSize: 12),
                 ),
                 Container(

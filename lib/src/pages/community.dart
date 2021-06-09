@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_flutter_quickstart/src/pages/createtask.dart';
+import 'package:agora_flutter_quickstart/src/utils/api.dart';
 import 'package:flutter/material.dart';
 import '../components/unacceptedtask.dart';
 import '../components/acceptedtask.dart';
@@ -33,6 +34,7 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   void initState() {
     super.initState();
+    getUserInfo();
     MockFirstClick();
   }
 
@@ -71,7 +73,6 @@ class _CommunityPageState extends State<CommunityPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(taskLists);
     return Scaffold(
         appBar: AppBar(
           title: Text('社区'),

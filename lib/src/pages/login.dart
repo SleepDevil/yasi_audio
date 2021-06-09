@@ -16,10 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final _loginFormKey = GlobalKey<FormState>();
 
   void login() async {
+    print('-----------------');
     if ((_loginFormKey.currentState as FormState).validate()) {
       var success = await dio.post('/login',
           data: {'Username': username.text, 'Password': password.text});
-
+      print('---------------');
+      print('执行了');
       print(success.data['code']);
       if (success.data['code'] == 7) {
         showToast('登录失败');
@@ -38,11 +40,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("登录"),
+        title: Text('登录'),
       ),
-      body: new SingleChildScrollView(
-        child: new ConstrainedBox(
-          constraints: new BoxConstraints(minHeight: 120.0),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: 120.0),
           child: Container(
             padding: EdgeInsets.only(top: 30, right: 20),
             child: Form(
@@ -57,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 10.0, right: 10.0),
                           child: Center(
-                            child: Text("用户名",
+                            child: Text('用户名',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 )),
@@ -71,10 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                             controller: username,
                             keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
-                              hintText: "请输入账号",
+                              hintText: '请输入账号',
                             ),
                             validator: (value) {
-                              if (value.length == 0) {
+                              if (value.isEmpty) {
                                 return '账号不能为空';
                               }
                               return null;
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 10.0, right: 10.0),
                           child: Center(
-                            child: Text("密码",
+                            child: Text('密码',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                 )),
@@ -106,10 +108,10 @@ class _LoginPageState extends State<LoginPage> {
                             controller: password,
                             obscureText: true,
                             decoration: const InputDecoration(
-                              hintText: "请输入密码",
+                              hintText: '请输入密码',
                             ),
                             validator: (value) {
-                              if (value.length == 0) {
+                              if (value.isEmpty) {
                                 return '密码不能为空';
                               }
                               return null;
@@ -121,9 +123,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                     padding: EdgeInsets.only(top: 5),
-                    child: Text.rich(TextSpan(text: "暂无账号？", children: [
+                    child: Text.rich(TextSpan(text: '暂无账号？', children: [
                       TextSpan(
-                          text: "立即注册",
+                          text: '立即注册',
                           style: TextStyle(color: Color(0xFF00CED2)),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {

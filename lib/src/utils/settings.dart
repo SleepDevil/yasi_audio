@@ -1,4 +1,1 @@
-/// Define App ID and Token
-const APP_ID = "a4e417b3d58e4642bac026c629a07e4d";
-const Token =
-    "006a4e417b3d58e4642bac026c629a07e4dIAD85ugAhVUQer2x5LXxegZc73LgSQOTq4I43RP9p5PgEBw69csAAAAAEACK525ZxB6uYAEAAQDEHq5g";
+const APP_ID = 'a4e417b3d58e4642bac026c629a07e4d';

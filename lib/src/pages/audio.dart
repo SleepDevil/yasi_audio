@@ -1,6 +1,10 @@
 import 'dart:async';
 
+import 'package:agora_flutter_quickstart/src/utils/dio.dart';
+import 'package:http/http.dart' as http;
+import 'package:agora_flutter_quickstart/src/utils/toast.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,12 +17,12 @@ class AudioPage extends StatefulWidget {
 
 class AudioState extends State<AudioPage> {
   /// create a channelController to retrieve text value
-  final _channelController = TextEditingController();
+  final TextEditingController _channelController = TextEditingController();
 
   /// if channel textField is validated to have error
   bool _validateError = false;
 
-  ClientRole _role = ClientRole.Broadcaster;
+  final ClientRole _role = ClientRole.Broadcaster;
 
   @override
   void dispose() {
@@ -59,11 +63,9 @@ class AudioState extends State<AudioPage> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         onPressed: onJoin,
                         child: Text('进入'),
-                        color: Colors.blueAccent,
-                        textColor: Colors.white,
                       ),
                     )
                   ],
@@ -76,8 +78,31 @@ class AudioState extends State<AudioPage> {
     );
   }
 
+  Future<String> getToken() async {
+    var response =
+        await dio.post('/token', data: {'RoomId': _channelController.text});
+
+    print(response);
+    if (response.data['code'] != 0) {
+      if (response.data['data'] == 'record not found') {
+        return 'not found';
+      }
+      return 'fail';
+    }
+    return response.data['data'];
+  }
+
   Future<void> onJoin() async {
-    // update input validation
+    var token = await getToken();
+    print(token);
+    if (token == 'fail') {
+      showToast('进入房间失败，请联系管理员');
+      return;
+    }
+    if (token == 'not found') {
+      showToast('房间不存在');
+      return;
+    }
     setState(() {
       _channelController.text.isEmpty
           ? _validateError = true
@@ -90,9 +115,7 @@ class AudioState extends State<AudioPage> {
         context,
         MaterialPageRoute(
           builder: (context) => CallPage(
-            channelName: _channelController.text,
-            role: _role,
-          ),
+              channelName: _channelController.text, role: _role, token: token),
         ),
       );
     }

@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
-import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 
 import '../utils/settings.dart';
@@ -10,12 +8,14 @@ import '../utils/settings.dart';
 class CallPage extends StatefulWidget {
   /// non-modifiable channel name of the page
   final String channelName;
+  final String token;
 
   /// non-modifiable client role of the page
   final ClientRole role;
 
   /// Creates a call page with given channel name.
-  const CallPage({Key key, this.channelName, this.role}) : super(key: key);
+  const CallPage({Key key, this.channelName, this.role, this.token})
+      : super(key: key);
 
   @override
   _CallPageState createState() => _CallPageState();
@@ -45,16 +45,6 @@ class _CallPageState extends State<CallPage> {
   }
 
   Future<void> initialize() async {
-    if (APP_ID.isEmpty) {
-      setState(() {
-        _infoStrings.add(
-          'APP_ID missing, please provide your APP_ID in settings.dart',
-        );
-        _infoStrings.add('Agora Engine is not starting');
-      });
-      return;
-    }
-
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // ignore: deprecated_member_use
@@ -62,7 +52,7 @@ class _CallPageState extends State<CallPage> {
     // VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     // configuration.dimensions = VideoDimensions(1920, 1080);
     // await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(Token, widget.channelName, null, 0);
+    await _engine.joinChannel(widget.token, widget.channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -74,102 +64,40 @@ class _CallPageState extends State<CallPage> {
 
   /// Add agora event handlers
   void _addAgoraEventHandlers() {
-    _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
-      setState(() {
-        final info = 'onError: $code';
-        _infoStrings.add(info);
-      });
-    }, joinChannelSuccess: (channel, uid, elapsed) {
-      setState(() {
-        final info = 'onJoinChannel: $channel, uid: $uid';
-        _infoStrings.add(info);
-      });
-    }, leaveChannel: (stats) {
-      setState(() {
-        _infoStrings.add('onLeaveChannel');
-        _users.clear();
-      });
-    }, userJoined: (uid, elapsed) {
-      setState(() {
-        final info = 'userJoined: $uid';
-        _infoStrings.add(info);
-        _users.add(uid);
-      });
-    }, userOffline: (uid, elapsed) {
-      setState(() {
-        final info = 'userOffline: $uid';
-        _infoStrings.add(info);
-        _users.remove(uid);
-      });
-    }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
-      setState(() {
-        final info = 'firstRemoteVideo: $uid ${width}x $height';
-        _infoStrings.add(info);
-      });
-    }));
-  }
-
-  /// Helper function to get list of native views
-  List<Widget> _getRenderViews() {
-    final List<StatefulWidget> list = [];
-    if (widget.role == ClientRole.Broadcaster) {
-      list.add(RtcLocalView.SurfaceView());
-    }
-    _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid)));
-    return list;
-  }
-
-  /// Video view wrapper
-  Widget _videoView(view) {
-    return Expanded(child: Container(child: view));
-  }
-
-  /// Video view row wrapper
-  Widget _expandedVideoRow(List<Widget> views) {
-    final wrappedViews = views.map<Widget>(_videoView).toList();
-    return Expanded(
-      child: Row(
-        children: wrappedViews,
-      ),
-    );
-  }
-
-  /// Video layout wrapper
-  Widget _viewRows() {
-    final views = _getRenderViews();
-    switch (views.length) {
-      case 1:
-        return Container(
-            child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
-      case 2:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-          ],
-        ));
-      case 3:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
-      case 4:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
-      default:
-    }
-    return Container();
+    _engine.setEventHandler(RtcEngineEventHandler(
+      error: (code) {
+        setState(() {
+          final info = '出错了: $code，请联系管理员';
+          _infoStrings.add(info);
+        });
+      },
+      joinChannelSuccess: (channel, uid, elapsed) {
+        setState(() {
+          final info = '已进入房间';
+          _infoStrings.add(info);
+        });
+      },
+      leaveChannel: (stats) {
+        setState(() {
+          _infoStrings.add('用户已离开房间');
+          _users.clear();
+        });
+      },
+      userJoined: (uid, elapsed) {
+        setState(() {
+          final info = '对方已进入房间';
+          _infoStrings.add(info);
+          _users.add(uid);
+        });
+      },
+      userOffline: (uid, elapsed) {
+        setState(() {
+          final info = '对方已下线';
+          _infoStrings.add(info);
+          _users.remove(uid);
+        });
+      },
+    ));
   }
 
   /// Toolbar layout
@@ -182,40 +110,28 @@ class _CallPageState extends State<CallPage> {
         children: <Widget>[
           RawMaterialButton(
             onPressed: _onToggleMute,
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: muted ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
             child: Icon(
               muted ? Icons.mic_off : Icons.mic,
               color: muted ? Colors.white : Colors.blueAccent,
               size: 35.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
           ),
           RawMaterialButton(
             onPressed: () => _onCallEnd(context),
+            shape: CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
               size: 35.0,
             ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
           ),
-          // RawMaterialButton(
-          //   onPressed: _onSwitchCamera,
-          //   child: Icon(
-          //     Icons.switch_camera,
-          //     color: Colors.blueAccent,
-          //     size: 20.0,
-          //   ),
-          //   shape: CircleBorder(),
-          //   elevation: 2.0,
-          //   fillColor: Colors.white,
-          //   padding: const EdgeInsets.all(12.0),
-          // )
         ],
       ),
     );
@@ -282,26 +198,26 @@ class _CallPageState extends State<CallPage> {
     _engine.muteLocalAudioStream(muted);
   }
 
-  void _onSwitchCamera() {
-    _engine.switchCamera();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Test'),
-      ),
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            _viewRows(),
-            _panel(),
-            _toolbar(),
-          ],
-        ),
-      ),
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('lib/assets/audio_background.jpg'),
+              fit: BoxFit.cover)),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('语音'),
+          ),
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: Stack(
+              children: <Widget>[
+                _panel(),
+                _toolbar(),
+              ],
+            ),
+          )),
     );
   }
 }
