@@ -18,28 +18,29 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController repeatPassword = TextEditingController();
   TextEditingController invitationCode = TextEditingController();
   TextEditingController yasiScore = TextEditingController();
-  GlobalKey _formKey = new GlobalKey<FormState>();
+  // ignore: unnecessary_new
+  final GlobalKey _formKey = new GlobalKey<FormState>();
 
   void Register() async {
-    print("注册了");
+    print('注册了');
     try {
       var res = await dio.post('/register', data: {
-        "Username": username.text,
-        "Password": password.text,
-        "Nickname": nickname.text,
-        "Invitation_Code": invitationCode.text,
-        "OralScore": yasiScore.text
+        'Username': username.text,
+        'Password': password.text,
+        'Nickname': nickname.text,
+        'Invitation_Code': invitationCode.text,
+        'OralScore': yasiScore.text
       });
       print(res);
-      if (res.data["code"] == 0) {
-        showToast("注册成功，即将跳转至登录页面");
-        const timeout = const Duration(seconds: 3);
+      if (res.data['code'] == 0) {
+        showToast('注册成功，即将跳转至登录页面');
+        const timeout = Duration(seconds: 3);
         Timer(timeout, () {
           Navigator.pop(context);
         });
       }
-      if (res.data["code"] == 7) {
-        showToast(res.data["msg"]);
+      if (res.data['code'] == 7) {
+        showToast(res.data['msg']);
       }
     } catch (e) {
       print(e);
@@ -50,19 +51,19 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       print(invitationCode.text);
       var res = await dio
-          .post('/checkinvite', data: {"Invitation_Code": invitationCode.text});
-      showToast(res.data["msg"]);
-      return res.data["success"];
+          .post('/checkinvite', data: {'Invitation_Code': invitationCode.text});
+      showToast(res.data['msg']);
+      return res.data['success'];
     } catch (e) {
       print(e);
-      showToast("未知错误，请联系管理员");
-      return "false";
+      showToast('未知错误，请联系管理员');
+      return 'false';
     }
   }
 
   void register() async {
     if (password.text != repeatPassword.text) {
-      showDialog(
+      await showDialog(
           context: context,
           barrierDismissible: false,
           builder: (context) {
@@ -71,8 +72,8 @@ class _RegisterPageState extends State<RegisterPage> {
               content: Text('两次密码不一致，请重新输入'),
               actions: <Widget>[
                 TextButton(
-                  child: Text("确定"),
-                  onPressed: () => Navigator.of(context).pop(), //关闭对话框
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('确定'), //关闭对话框
                 ),
               ],
             );
@@ -80,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     if ((_formKey.currentState as FormState).validate()) {
       var success = await CheckInvitationCode();
-      if (success == "true") {
+      if (success == 'true') {
         Register();
       }
     }
@@ -92,11 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
       designSize: Size(360, 690),
       builder: () => Scaffold(
         appBar: AppBar(
-          title: Text("注册"),
+          title: Text('注册'),
         ),
-        body: new SingleChildScrollView(
-          child: new ConstrainedBox(
-              constraints: new BoxConstraints(
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+              constraints: BoxConstraints(
                 minHeight: 120.0,
               ),
               child: Container(
@@ -112,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.0, right: 10.0),
                               child: Center(
-                                child: Text("用户名",
+                                child: Text('用户名',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     )),
@@ -126,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 controller: nickname,
                                 keyboardType: TextInputType.name,
                                 decoration: const InputDecoration(
-                                  hintText: "用户名长度为4-12个字符",
+                                  hintText: '用户名长度为4-12个字符',
                                 ),
                                 validator: (value) {
                                   if (value.length < 4 || value.length > 12) {
@@ -147,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.0, right: 10.0),
                               child: Center(
-                                child: Text("账号",
+                                child: Text('账号',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     )),
@@ -161,10 +162,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                 controller: username,
                                 keyboardType: TextInputType.name,
                                 decoration: const InputDecoration(
-                                  hintText: "请输入账号",
+                                  hintText: '请输入账号',
                                 ),
                                 validator: (value) {
-                                  if (value.length == 0) {
+                                  if (value.isEmpty) {
                                     return '账号不能为空';
                                   }
                                   return null;
@@ -182,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.0, right: 10.0),
                               child: Center(
-                                child: Text("密码",
+                                child: Text('密码',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     )),
@@ -217,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.0, right: 10.0),
                               child: Center(
-                                child: Text("确认密码",
+                                child: Text('确认密码',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     )),
@@ -252,7 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.0, right: 10.0),
                               child: Center(
-                                child: Text("成绩",
+                                child: Text('成绩',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     )),
@@ -286,7 +287,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 10.0, right: 10.0),
                               child: Center(
-                                child: Text("邀请码",
+                                child: Text('邀请码',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                     )),
@@ -300,7 +301,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 controller: invitationCode,
                                 keyboardType: TextInputType.name,
                                 decoration: const InputDecoration(
-                                  hintText: "请输入您的邀请码",
+                                  hintText: '请输入您的邀请码',
                                 ),
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -325,7 +326,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () async {
-                                        showDialog(
+                                        await showDialog(
                                             context: context,
                                             barrierDismissible: true,
                                             builder: (context) {
@@ -349,7 +350,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Center(
                           child: Text.rich(TextSpan(text: '已有账号？', children: [
                             TextSpan(
-                                text: "立即登录",
+                                text: '立即登录',
                                 style: TextStyle(color: Color(0xFF00CED2)),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
@@ -363,8 +364,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       Container(
                         child: ElevatedButton(
-                          child: Text('注册'),
                           onPressed: register,
+                          child: Text('注册'),
                         ),
                       ),
                     ]),

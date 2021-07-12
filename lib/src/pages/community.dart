@@ -112,16 +112,16 @@ class _CommunityPageState extends State<CommunityPage> {
                     itemBuilder: (context, i) {
                       if (selectedCategory == '未接受') {
                         return UnAcceptedTask(
-                          CreatedAt: taskLists[i]['CreatedAt'],
-                          CreatedBy: taskLists[i]['CreatedBy'],
-                          headerImg: taskLists[i]['headerImg'],
-                          OralScore: taskLists[i]['OralScore'],
-                          AcceptedBy: taskLists[i]['AcceptedBy'],
-                          accepted: taskLists[i]['accepted'].toString(),
-                          TargetScore: taskLists[i]['TargetScore'],
-                          BattleTime: taskLists[i]['BattleTime'],
-                          RoomId: taskLists[i]['RoomId'],
-                        );
+                            CreatedAt: taskLists[i]['CreatedAt'],
+                            CreatedBy: taskLists[i]['CreatedBy'],
+                            headerImg: taskLists[i]['headerImg'],
+                            OralScore: taskLists[i]['OralScore'],
+                            AcceptedBy: taskLists[i]['AcceptedBy'],
+                            accepted: taskLists[i]['accepted'].toString(),
+                            TargetScore: taskLists[i]['TargetScore'],
+                            BattleTime: taskLists[i]['BattleTime'],
+                            RoomId: taskLists[i]['RoomId'],
+                            GetTask: () => GetTasks());
                       } else {
                         return AcceptedTask(
                           CreatedAt: taskLists[i]['CreatedAt'],
@@ -145,7 +145,7 @@ class _CommunityPageState extends State<CommunityPage> {
                         MaterialPageRoute(builder: (context) {
                       return CreateTaskPage();
                     })).then((value) {
-                      setState(() {});
+                      GetTasks();
                     })
                   },
                   child: Icon(

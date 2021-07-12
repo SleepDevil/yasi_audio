@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:agora_flutter_quickstart/src/utils/toast.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 

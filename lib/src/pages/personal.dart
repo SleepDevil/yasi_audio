@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:agora_flutter_quickstart/src/pages/login.dart';
 import 'package:agora_flutter_quickstart/src/utils/api.dart';
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
-import 'package:agora_flutter_quickstart/src/utils/img_compress.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';

@@ -17,12 +17,12 @@ class _LoginPageState extends State<LoginPage> {
 
   void login() async {
     print('-----------------');
+    // ignore: unnecessary_cast
     if ((_loginFormKey.currentState as FormState).validate()) {
       var success = await dio.post('/login',
           data: {'Username': username.text, 'Password': password.text});
-      print('---------------');
-      print('执行了');
-      print(success.data['code']);
+      print(success);
+      // print(success.data['code']);
       if (success.data['code'] == 7) {
         showToast('登录失败');
       }

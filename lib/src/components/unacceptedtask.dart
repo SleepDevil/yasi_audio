@@ -16,6 +16,7 @@ class UnAcceptedTask extends StatefulWidget {
   final String TargetScore;
   final String BattleTime;
   final String RoomId;
+  final Function GetTask;
 
   UnAcceptedTask({
     Key key,
@@ -28,6 +29,7 @@ class UnAcceptedTask extends StatefulWidget {
     @required this.TargetScore,
     @required this.BattleTime,
     @required this.RoomId,
+    @required this.GetTask,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,8 @@ class UnAcceptedTask extends StatefulWidget {
       accepted,
       TargetScore,
       BattleTime,
-      RoomId);
+      RoomId,
+      GetTask);
 }
 
 class _UnAcceptedTaskState extends State<UnAcceptedTask> {
@@ -53,21 +56,21 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
       TargetScore,
       BattleTime,
       RoomId;
+  Function GetTask;
   _UnAcceptedTaskState(
-    this.CreatedAt,
-    this.CreatedBy,
-    this.headerImg,
-    this.OralScore,
-    this.AcceptedBy,
-    this.accepted,
-    this.TargetScore,
-    this.BattleTime,
-    this.RoomId,
-  );
+      this.CreatedAt,
+      this.CreatedBy,
+      this.headerImg,
+      this.OralScore,
+      this.AcceptedBy,
+      this.accepted,
+      this.TargetScore,
+      this.BattleTime,
+      this.RoomId,
+      this.GetTask);
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -94,6 +97,7 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
     });
     if (res.data['code'] != 0) {
       showToast(res.data['msg']);
+      return;
     }
     await showDialog(
         context: context,
@@ -125,6 +129,7 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
             ],
           );
         });
+    await GetTask();
   }
 
   @override

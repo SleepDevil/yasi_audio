@@ -3,8 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 void showToast(
   String text, {
-  gravity: ToastGravity.CENTER,
-  toastLength: Toast.LENGTH_SHORT,
+  gravity = ToastGravity.CENTER,
+  toastLength = Toast.LENGTH_SHORT,
 }) {
   Fluttertoast.showToast(
     msg: text,

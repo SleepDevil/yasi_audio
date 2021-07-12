@@ -87,7 +87,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 10.0, right: 10.0),
                             child: Center(
-                              child: Text("目标口语成绩",
+                              child: Text('目标口语成绩',
                                   style: TextStyle(
                                     fontSize: 18.0,
                                   )),
@@ -101,7 +101,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               controller: targetscore,
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
-                                hintText: "请输入目标口语成绩",
+                                hintText: '请输入目标口语成绩',
                               ),
                               validator: (value) {
                                 if (value.isEmpty) {

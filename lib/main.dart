@@ -6,13 +6,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dio/dio.dart';
 
 void main() {
-  // dio.interceptors.add(InterceptorsWrapper(onError: (DioError err, handler) {
-  //   print(err);
-  //   if (err.response.statusCode == 502) {
-  //     showToast('服务器错误，请联系管理员');
-  //   }
-  //   return handler.next(err);
-  // }));
+  dio.interceptors.add(InterceptorsWrapper(onError: (DioError err, handler) {
+    if (err.response.statusCode == 502) {
+      showToast('服务器错误，请联系管理员');
+    }
+    return err;
+  }));
   runApp(MyApp());
 }
 

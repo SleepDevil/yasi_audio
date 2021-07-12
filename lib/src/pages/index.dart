@@ -28,19 +28,19 @@ class _IndexPageState extends State<IndexPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: "学习",
+            label: '学习',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.forum),
-            label: "社区",
+            label: '社区',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.phone_in_talk),
-            label: "口语",
+            label: '口语',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: "个人中心",
+            label: '个人中心',
           )
         ],
         type: BottomNavigationBarType.fixed,
