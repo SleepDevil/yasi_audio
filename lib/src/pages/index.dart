@@ -1,5 +1,6 @@
 import 'package:agora_flutter_quickstart/src/pages/audio.dart';
-import 'package:agora_flutter_quickstart/src/pages/learn.dart';
+import 'package:agora_flutter_quickstart/src/pages/teacherMask/main.dart';
+// import 'package:agora_flutter_quickstart/src/pages/learn.dart';
 import 'package:agora_flutter_quickstart/src/pages/community.dart';
 import 'package:agora_flutter_quickstart/src/pages/personal.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  final pages = [LearnPage(), CommunityPage(), AudioPage(), PersonalPage()];
+  final pages = [CallMask(), CommunityPage(), AudioPage(), PersonalPage()];
   var currentIndex = 0;
 
   void _changePage(int index) {

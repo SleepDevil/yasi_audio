@@ -20,16 +20,17 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController yasiScore = TextEditingController();
   // ignore: unnecessary_new
   final GlobalKey _formKey = new GlobalKey<FormState>();
+  var groupValue = 1;
 
   void Register() async {
-    print('注册了');
     try {
       var res = await dio.post('/register', data: {
         'Username': username.text,
         'Password': password.text,
         'Nickname': nickname.text,
         'Invitation_Code': invitationCode.text,
-        'OralScore': yasiScore.text
+        'OralScore': yasiScore.text,
+        'Identity': groupValue,
       });
       print(res);
       if (res.data['code'] == 0) {
@@ -243,6 +244,51 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                           )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: ScreenUtil().setWidth(100),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: Center(
+                                child: Text('当前职业',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                    )),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                              child: Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Row(
+                              children: [
+                                Text('学生'),
+                                Radio(
+                                  value: 1,
+                                  groupValue: groupValue,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      groupValue = val;
+                                    });
+                                  },
+                                ),
+                                Text('已工作'),
+                                Radio(
+                                  value: 2,
+                                  groupValue: groupValue,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      groupValue = val;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ))
                         ],
                       ),
                       Row(

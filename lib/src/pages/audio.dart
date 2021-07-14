@@ -16,10 +16,8 @@ class AudioPage extends StatefulWidget {
 class AudioState extends State<AudioPage> {
   /// create a channelController to retrieve text value
   final TextEditingController _channelController = TextEditingController();
-
-  /// if channel textField is validated to have error
-  bool _validateError = false;
-
+// ignore: unnecessary_new
+  final GlobalKey _formKey = new GlobalKey<FormState>();
   final ClientRole _role = ClientRole.Broadcaster;
 
   @override
@@ -44,14 +42,19 @@ class AudioState extends State<AudioPage> {
               Row(
                 children: <Widget>[
                   Expanded(
-                      child: TextField(
-                    controller: _channelController,
-                    decoration: InputDecoration(
-                      errorText: _validateError ? '请输入房间号' : null,
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(width: 1),
+                      child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      controller: _channelController,
+                      decoration: InputDecoration(
+                        hintText: '请输入房间号',
                       ),
-                      hintText: '请输入房间号',
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return '房间号不能为空';
+                        }
+                        return null;
+                      },
                     ),
                   ))
                 ],
@@ -77,6 +80,7 @@ class AudioState extends State<AudioPage> {
   }
 
   Future<String> getToken() async {
+    print(_channelController.text);
     var response =
         await dio.post('/token', data: {'RoomId': _channelController.text});
 
@@ -91,31 +95,30 @@ class AudioState extends State<AudioPage> {
   }
 
   Future<void> onJoin() async {
-    var token = await getToken();
-    print(token);
-    if (token == 'fail') {
-      showToast('进入房间失败，请联系管理员');
-      return;
-    }
-    if (token == 'not found') {
-      showToast('房间不存在');
-      return;
-    }
-    setState(() {
-      _channelController.text.isEmpty
-          ? _validateError = true
-          : _validateError = false;
-    });
-    if (_channelController.text.isNotEmpty) {
-      await _handleCameraAndMic(Permission.microphone);
-      // push video page with given channel name
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CallPage(
-              channelName: _channelController.text, role: _role, token: token),
-        ),
-      );
+    if ((_formKey.currentState as FormState).validate()) {
+      var token = await getToken();
+      print(token);
+      if (token == 'fail') {
+        showToast('进入房间失败，请联系管理员');
+        return;
+      }
+      if (token == 'not found') {
+        showToast('房间不存在');
+        return;
+      }
+      if (_channelController.text.isNotEmpty) {
+        await _handleCameraAndMic(Permission.microphone);
+        // push video page with given channel name
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CallPage(
+                channelName: _channelController.text,
+                role: _role,
+                token: token),
+          ),
+        );
+      }
     }
   }
 

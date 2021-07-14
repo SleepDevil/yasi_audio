@@ -10,6 +10,7 @@ class _LearnPageState extends State<LearnPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('学习')),
+      body: Text('dsajhasdjkhdjashk'),
     );
   }
 }

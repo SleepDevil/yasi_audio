@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:agora_flutter_quickstart/src/pages/teacherMask/main.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 
@@ -42,16 +43,19 @@ class _CallPageState extends State<CallPage> {
     super.initState();
     // initialize agora sdk
     initialize();
+    Timer(Duration(seconds: 3), () {
+      print('timerafter执行了===============');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CallMask()));
+    });
   }
 
   Future<void> initialize() async {
+    print('执行了！！！！');
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // ignore: deprecated_member_use
     await _engine.enableWebSdkInteroperability(true);
-    // VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
-    // configuration.dimensions = VideoDimensions(1920, 1080);
-    // await _engine.setVideoEncoderConfiguration(configuration);
     await _engine.joinChannel(widget.token, widget.channelName, null, 0);
   }
 
