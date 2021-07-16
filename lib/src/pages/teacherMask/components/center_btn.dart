@@ -24,7 +24,7 @@ class CenterNextButton extends StatelessWidget {
       parent: animationController,
       curve: Interval(
         beginTime,
-        endTime,
+        endTime / 2,
         curve: Curves.fastOutSlowIn,
       ),
     ));
@@ -83,7 +83,7 @@ class CenterNextButton extends StatelessWidget {
                   ),
                   child: PageTransitionSwitcher(
                     duration: Duration(milliseconds: 480),
-                    reverse: _signUpMoveAnimation.value < 0.7,
+                    // reverse: _signUpMoveAnimation.value < 0.7,
                     transitionBuilder: (
                       Widget child,
                       Animation<double> animation,
@@ -97,7 +97,7 @@ class CenterNextButton extends StatelessWidget {
                         child: child,
                       );
                     },
-                    child: _signUpMoveAnimation.value > 0.1
+                    child: _signUpMoveAnimation.value > interval * 2
                         ? InkWell(
                             key: ValueKey('next button'),
                             onTap: onNextClick,
@@ -157,7 +157,6 @@ class CenterNextButton extends StatelessWidget {
   Widget _pageView() {
     var interval = 1 / 26;
     var _selectedIndex = 0;
-    print(animationController.value);
 
     if (animationController.value >= interval * 19 / 2) {
       _selectedIndex = 9;

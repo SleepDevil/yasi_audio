@@ -4,12 +4,15 @@ class CommonView extends StatelessWidget {
   final AnimationController animationController;
 
   final double beginTime, endTime;
+  final String textContent, textTitle;
 
   const CommonView(
       {Key key,
       @required this.animationController,
       @required this.beginTime,
-      @required this.endTime})
+      @required this.endTime,
+      @required this.textContent,
+      @required this.textTitle})
       : super(key: key);
 
   @override
@@ -72,7 +75,7 @@ class CommonView extends StatelessWidget {
               SlideTransition(
                 position: _relaxAnimation,
                 child: Text(
-                  'Relax',
+                  textTitle ?? '',
                   style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -82,7 +85,7 @@ class CommonView extends StatelessWidget {
                   padding:
                       EdgeInsets.only(left: 64, right: 64, top: 16, bottom: 16),
                   child: Text(
-                    'Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore',
+                    textContent ?? '',
                     textAlign: TextAlign.center,
                   ),
                 ),

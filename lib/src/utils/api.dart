@@ -11,7 +11,8 @@ Future<Object> getUserInfo() async {
   var res =
       await dio.post('/checktoken', data: {'token': prefs.getString('token')});
   await prefs.setString('nickname', res.data['data']['nickName']);
-  await prefs.setString('username', res.data['data']['userName']);
+  await prefs.setString(
+      'username', res.data['data']['userName']); // username为账号
   await prefs.setString('headerimg', res.data['data']['headerImg']);
   await prefs.setString('oralscore', res.data['data']['oralscore']);
   var userInfo = res.data['data'];

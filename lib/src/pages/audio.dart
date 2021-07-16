@@ -5,6 +5,7 @@ import 'package:agora_flutter_quickstart/src/utils/toast.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'call.dart';
 
@@ -79,7 +80,7 @@ class AudioState extends State<AudioPage> {
     );
   }
 
-  Future<String> getToken() async {
+  Future getToken() async {
     print(_channelController.text);
     var response =
         await dio.post('/token', data: {'RoomId': _channelController.text});
@@ -96,26 +97,30 @@ class AudioState extends State<AudioPage> {
 
   Future<void> onJoin() async {
     if ((_formKey.currentState as FormState).validate()) {
-      var token = await getToken();
-      print(token);
-      if (token == 'fail') {
+      var data = await getToken();
+      if (data == 'fail') {
         showToast('进入房间失败，请联系管理员');
         return;
       }
-      if (token == 'not found') {
+      if (data == 'not found') {
         showToast('房间不存在');
         return;
       }
+      var prefs = await SharedPreferences.getInstance();
       if (_channelController.text.isNotEmpty) {
         await _handleCameraAndMic(Permission.microphone);
         // push video page with given channel name
+        await prefs.setString('teacher', data['teacher']);
+        await prefs.setString('student', data['student']);
+
         await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => CallPage(
-                channelName: _channelController.text,
-                role: _role,
-                token: token),
+              channelName: _channelController.text,
+              role: _role,
+              token: data['token'],
+            ),
           ),
         );
       }

@@ -7,16 +7,15 @@ import 'package:flutter/material.dart';
 import '../utils/settings.dart';
 
 class CallPage extends StatefulWidget {
-  /// non-modifiable channel name of the page
-  final String channelName;
-  final String token;
-
-  /// non-modifiable client role of the page
+  final String channelName, token;
   final ClientRole role;
 
-  /// Creates a call page with given channel name.
-  const CallPage({Key key, this.channelName, this.role, this.token})
-      : super(key: key);
+  const CallPage({
+    Key key,
+    @required this.channelName,
+    @required this.role,
+    @required this.token,
+  }) : super(key: key);
 
   @override
   _CallPageState createState() => _CallPageState();
@@ -44,14 +43,12 @@ class _CallPageState extends State<CallPage> {
     // initialize agora sdk
     initialize();
     Timer(Duration(seconds: 3), () {
-      print('timerafter执行了===============');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => CallMask()));
     });
   }
 
   Future<void> initialize() async {
-    print('执行了！！！！');
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // ignore: deprecated_member_use
