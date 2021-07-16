@@ -158,7 +158,19 @@ class CenterNextButton extends StatelessWidget {
     var interval = 1 / 26;
     var _selectedIndex = 0;
 
-    if (animationController.value >= interval * 19 / 2) {
+    if (animationController.value >= interval * 31 / 2) {
+      _selectedIndex = 15;
+    } else if (animationController.value >= interval * 29 / 2) {
+      _selectedIndex = 14;
+    } else if (animationController.value >= interval * 27 / 2) {
+      _selectedIndex = 13;
+    } else if (animationController.value >= interval * 25 / 2) {
+      _selectedIndex = 12;
+    } else if (animationController.value >= interval * 23 / 2) {
+      _selectedIndex = 11;
+    } else if (animationController.value >= interval * 21 / 2) {
+      _selectedIndex = 10;
+    } else if (animationController.value >= interval * 19 / 2) {
       _selectedIndex = 9;
     } else if (animationController.value >= interval * 17 / 2) {
       _selectedIndex = 8;

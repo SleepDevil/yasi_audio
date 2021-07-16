@@ -18,3 +18,18 @@ Future<Object> getUserInfo() async {
   var userInfo = res.data['data'];
   return userInfo;
 }
+
+Future<String> getUserIdentity(String username) async {
+  var res = await dio.post('/getidentity', data: {'username': username});
+  return res.data['data'];
+}
+
+Future<List> getQuestions(String topic_id) async {
+  var res = await dio.post('/getquestions', data: {'topicId': topic_id});
+  return res.data['data'];
+}
+
+Future<String> getTopic(String part) async {
+  var res = await dio.post('/gettopic', data: {'part': part});
+  return res.data['data']['topicName'];
+}
