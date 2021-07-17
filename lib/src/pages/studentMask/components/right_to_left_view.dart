@@ -1,72 +1,19 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
-class TimeView extends StatefulWidget {
+class CommonView extends StatelessWidget {
   final AnimationController animationController;
-  final double beginTime;
-  final double endTime;
-  final String textContent;
-  final String textTitle;
 
-  TimeView({
-    Key key,
-    @required this.animationController,
-    @required this.beginTime,
-    @required this.endTime,
-    @required this.textContent,
-    @required this.textTitle,
-  }) : super(key: key);
+  final double beginTime, endTime;
+  final String textContent, textTitle;
 
-  @override
-  _TimeViewState createState() => _TimeViewState(
-      animationController, beginTime, endTime, textContent, textTitle);
-}
-
-class _TimeViewState extends State<TimeView> {
-  String textContent, textTitle;
-  double beginTime, endTime;
-  AnimationController animationController;
-  Timer _timer;
-
-  _TimeViewState(this.animationController, this.beginTime, this.endTime,
-      this.textContent, this.textTitle);
-
-  var leftTime = 120;
-  final _streamController = StreamController<int>();
-
-  @override
-  void initState() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      print(animationController.value);
-    });
-    Timer checkTime;
-    checkTime = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (animationController.value == 0.6000000000000001) {
-        checkTime.cancel();
-        ticker();
-      }
-    });
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _streamController.close();
-    super.dispose();
-  }
-
-  void ticker() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      leftTime -= 1;
-      _streamController.add(leftTime);
-      if (leftTime <= 0) {
-        _streamController.close();
-        _timer.cancel();
-      }
-    });
-  }
+  const CommonView(
+      {Key key,
+      @required this.animationController,
+      @required this.beginTime,
+      @required this.endTime,
+      @required this.textContent,
+      @required this.textTitle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +63,6 @@ class _TimeViewState extends State<TimeView> {
         ),
       ),
     );
-
     return SlideTransition(
       position: _firstHalfAnimation,
       child: SlideTransition(
@@ -143,23 +89,6 @@ class _TimeViewState extends State<TimeView> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-              SlideTransition(
-                position: _textAnimation,
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 64, right: 64, top: 16, bottom: 16),
-                    child: StreamBuilder<int>(
-                      initialData: 120,
-                      stream: _streamController.stream, //
-                      builder:
-                          (BuildContext context, AsyncSnapshot<int> snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-                        return Text('剩余时间: ${snapshot.data}');
-                      },
-                    )),
               ),
             ],
           ),

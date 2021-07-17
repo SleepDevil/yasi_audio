@@ -33,3 +33,8 @@ Future<Map> getTopic(String part) async {
   var res = await dio.post('/gettopic', data: {'part': part});
   return res.data['data'];
 }
+
+Future<Map> getTopicRedis(String part, String RoomId) async {
+  var res = await dio.post('/gettopic', data: {'part': part, 'roomId': RoomId});
+  return res.data['data'];
+}

@@ -82,10 +82,11 @@ class AudioState extends State<AudioPage> {
 
   Future getToken() async {
     print(_channelController.text);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('roomid', _channelController.text);
     var response =
         await dio.post('/token', data: {'RoomId': _channelController.text});
 
-    print(response);
     if (response.data['code'] != 0) {
       if (response.data['data'] == 'record not found') {
         return 'not found';

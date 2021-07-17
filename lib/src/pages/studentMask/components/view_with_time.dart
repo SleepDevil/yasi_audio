@@ -37,12 +37,9 @@ class _TimeViewState extends State<TimeView> {
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      print(animationController.value);
-    });
     Timer checkTime;
     checkTime = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (animationController.value == 0.6000000000000001) {
+      if (animationController.value == 0.7692307692307693) {
         checkTime.cancel();
         ticker();
       }

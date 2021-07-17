@@ -44,7 +44,7 @@ class _CallPageState extends State<CallPage> {
     initialize();
     Timer(Duration(seconds: 3), () {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CallMask()));
+          context, MaterialPageRoute(builder: (context) => TeacherCallMask()));
     });
   }
 

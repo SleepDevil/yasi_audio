@@ -9,14 +9,15 @@ import 'components/right_to_left_view.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'dart:math';
 
-class CallMask extends StatefulWidget {
-  const CallMask({Key key}) : super(key: key);
+class TeacherCallMask extends StatefulWidget {
+  const TeacherCallMask({Key key}) : super(key: key);
 
   @override
-  _CallMaskState createState() => _CallMaskState();
+  _TeacherCallMaskState createState() => _TeacherCallMaskState();
 }
 
-class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
+class _TeacherCallMaskState extends State<TeacherCallMask>
+    with TickerProviderStateMixin {
   AnimationController _animationController;
   var interval = 1 / 26;
   String teacherName, studentName, identity, topicName, part1SecondName;
@@ -24,21 +25,16 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
   var rng = Random();
   List ThreeToFive = ['major', 'home', 'hometown'];
 
-  // print(rng.nextInt(3));
-  // var channel =
-  //     IOWebSocketChannel.connect(Uri.parse('ws://8.136.109.187:8081/echo'));
+  var channel =
+      IOWebSocketChannel.connect(Uri.parse('ws://8.136.109.187:8081/echo'));
 
   @override
   void initState() {
-    // channel.stream.listen((message) {
-    //   channel.sink.add('received!');
-    //   channel.sink.close(status.goingAway);
-    // });
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 12),
     );
-    _animationController.animateTo(interval * 25);
+    _animationController.animateTo(interval * 1);
     super.initState();
   }
 
@@ -69,12 +65,12 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
     var randomThreeToFive = rng.nextInt(3) + 3;
     var questionThreeToFive = await getQuestions(randomThreeToFive.toString());
     part1thirdArr = questionThreeToFive;
-    print(part1thirdArr);
 
     // 获取part2 topic
-    var res = await getTopic('2');
+    var res = await getTopicRedis('2', localPrefs.getString('roomid'));
 
     topicName = res['topicName'];
+    channel.sink.add(topicName);
     // 获取part3问题
     var part3id = res['id'];
     part3Arr = await getQuestions(part3id);

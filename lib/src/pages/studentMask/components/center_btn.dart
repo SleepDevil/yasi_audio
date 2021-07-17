@@ -18,7 +18,7 @@ class CenterNextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var interval = 1 / 26;
+    var interval = 1 / 5;
 
     final _topMoveAnimation =
         Tween<Offset>(begin: Offset(0, 5), end: Offset(0, 0))
@@ -179,52 +179,10 @@ class CenterNextButton extends StatelessWidget {
   }
 
   Widget _pageView() {
-    var interval = 1 / 26;
+    var interval = 1 / 5;
     var _selectedIndex = 0;
 
-    if (animationController.value >= interval * 53 / 2) {
-      _selectedIndex = 25;
-    } else if (animationController.value >= interval * 49 / 2) {
-      _selectedIndex = 24;
-    } else if (animationController.value >= interval * 47 / 2) {
-      _selectedIndex = 23;
-    } else if (animationController.value >= interval * 45 / 2) {
-      _selectedIndex = 22;
-    } else if (animationController.value >= interval * 43 / 2) {
-      _selectedIndex = 21;
-    } else if (animationController.value >= interval * 41 / 2) {
-      _selectedIndex = 20;
-    } else if (animationController.value >= interval * 39 / 2) {
-      _selectedIndex = 19;
-    } else if (animationController.value >= interval * 37 / 2) {
-      _selectedIndex = 18;
-    } else if (animationController.value >= interval * 35 / 2) {
-      _selectedIndex = 17;
-    } else if (animationController.value >= interval * 33 / 2) {
-      _selectedIndex = 16;
-    } else if (animationController.value >= interval * 31 / 2) {
-      _selectedIndex = 15;
-    } else if (animationController.value >= interval * 29 / 2) {
-      _selectedIndex = 14;
-    } else if (animationController.value >= interval * 27 / 2) {
-      _selectedIndex = 13;
-    } else if (animationController.value >= interval * 25 / 2) {
-      _selectedIndex = 12;
-    } else if (animationController.value >= interval * 23 / 2) {
-      _selectedIndex = 11;
-    } else if (animationController.value >= interval * 21 / 2) {
-      _selectedIndex = 10;
-    } else if (animationController.value >= interval * 19 / 2) {
-      _selectedIndex = 9;
-    } else if (animationController.value >= interval * 17 / 2) {
-      _selectedIndex = 8;
-    } else if (animationController.value >= interval * 15 / 2) {
-      _selectedIndex = 7;
-    } else if (animationController.value >= interval * 13 / 2) {
-      _selectedIndex = 6;
-    } else if (animationController.value >= interval * 11 / 2) {
-      _selectedIndex = 5;
-    } else if (animationController.value >= interval * 9 / 2) {
+    if (animationController.value >= interval * 9 / 2) {
       _selectedIndex = 4;
     } else if (animationController.value >= interval * 7 / 2) {
       _selectedIndex = 3;
@@ -244,7 +202,7 @@ class CenterNextButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // ignore: sdk_version_ui_as_code
-              for (var i = 0; i < 13; i++)
+              for (var i = 0; i < 4; i++)
                 Padding(
                   padding: const EdgeInsets.all(4),
                   child: AnimatedContainer(
@@ -262,30 +220,6 @@ class CenterNextButton extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // ignore: sdk_version_ui_as_code
-              for (var i = 13; i < 25; i++)
-                Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 480),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      color: _selectedIndex == i
-                          ? Color(0xff132137)
-                          : Color(0xffE3E4E4),
-                    ),
-                    width: 10,
-                    height: 10,
-                  ),
-                )
-            ],
-          ),
-        )
       ],
     );
   }
