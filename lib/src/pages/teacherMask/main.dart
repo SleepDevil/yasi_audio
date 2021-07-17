@@ -38,7 +38,7 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
       vsync: this,
       duration: Duration(seconds: 12),
     );
-    _animationController.animateTo(interval * 20);
+    _animationController.animateTo(interval * 25);
     super.initState();
   }
 
@@ -286,6 +286,14 @@ All right! Remember you have one to two minutes for this. Don’t worry if I sto
                       textTitle: 'Part3',
                       textContent: 'Question3:' + part3Arr[2]['questionName'],
                     ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 24,
+                      endTime: interval * 25,
+                      textTitle: '结束',
+                      textContent:
+                          'Ok, well we’re out of time, so thank you very much. Beybey.',
+                    ),
                     // TopBackSkipView(
                     //   onBackClick: _onBackClick,
                     //   onSkipClick: _onSkipClick,
@@ -382,7 +390,9 @@ All right! Remember you have one to two minutes for this. Don’t worry if I sto
       _animationController?.animateTo(interval * 25);
     } else if (_animationController.value > interval * 24 &&
         _animationController.value <= interval * 25) {
-      _animationController?.animateTo(interval * 26);
+      // 切换角色
+      // changeRole();
+      Navigator.pop(context);
     }
     // print(_animationController.value <= interval);
   }

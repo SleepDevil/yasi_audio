@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,9 @@ class CenterNextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      print(animationController.value == 0.9615384615384616);
+    });
     var interval = 1 / 26;
 
     final _topMoveAnimation =
@@ -97,7 +102,7 @@ class CenterNextButton extends StatelessWidget {
                         child: child,
                       );
                     },
-                    child: _signUpMoveAnimation.value > interval * 2
+                    child: animationController.value == 0.9615384615384616
                         ? InkWell(
                             key: ValueKey('next button'),
                             onTap: onNextClick,
@@ -108,7 +113,7 @@ class CenterNextButton extends StatelessWidget {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    '下一步',
+                                    '切换角色',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -121,29 +126,55 @@ class CenterNextButton extends StatelessWidget {
                               ),
                             ),
                           )
-                        : InkWell(
-                            key: ValueKey('next button'),
-                            onTap: onNextClick,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    '准备好了',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                        : _signUpMoveAnimation.value > interval * 2
+                            ? InkWell(
+                                key: ValueKey('next button'),
+                                onTap: onNextClick,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 16.0, right: 16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        '下一步',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_forward_rounded,
+                                          color: Colors.white),
+                                    ],
                                   ),
-                                  Icon(Icons.arrow_forward_rounded,
-                                      color: Colors.white),
-                                ],
+                                ),
+                              )
+                            : InkWell(
+                                key: ValueKey('next button'),
+                                onTap: onNextClick,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 16.0, right: 16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        '准备好了',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_forward_rounded,
+                                          color: Colors.white),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
                   ),
                 ),
               ),
@@ -158,7 +189,17 @@ class CenterNextButton extends StatelessWidget {
     var interval = 1 / 26;
     var _selectedIndex = 0;
 
-    if (animationController.value >= interval * 41 / 2) {
+    if (animationController.value >= interval * 53 / 2) {
+      _selectedIndex = 25;
+    } else if (animationController.value >= interval * 49 / 2) {
+      _selectedIndex = 24;
+    } else if (animationController.value >= interval * 47 / 2) {
+      _selectedIndex = 23;
+    } else if (animationController.value >= interval * 45 / 2) {
+      _selectedIndex = 22;
+    } else if (animationController.value >= interval * 43 / 2) {
+      _selectedIndex = 21;
+    } else if (animationController.value >= interval * 41 / 2) {
       _selectedIndex = 20;
     } else if (animationController.value >= interval * 39 / 2) {
       _selectedIndex = 19;
@@ -234,7 +275,7 @@ class CenterNextButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // ignore: sdk_version_ui_as_code
-              for (var i = 13; i < 26; i++)
+              for (var i = 13; i < 25; i++)
                 Padding(
                   padding: const EdgeInsets.all(4),
                   child: AnimatedContainer(
