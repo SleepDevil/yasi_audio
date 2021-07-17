@@ -32,14 +32,11 @@ class _TimeViewState extends State<TimeView> {
   _TimeViewState(this.animationController, this.beginTime, this.endTime,
       this.textContent, this.textTitle);
 
-  var leftTime = 120;
+  var leftTime = 10;
   final _streamController = StreamController<int>();
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      print(animationController.value);
-    });
     Timer checkTime;
     checkTime = Timer.periodic(Duration(seconds: 1), (timer) {
       if (animationController.value == 0.6000000000000001) {
@@ -64,6 +61,9 @@ class _TimeViewState extends State<TimeView> {
       if (leftTime <= 0) {
         _streamController.close();
         _timer.cancel();
+        setState(() {
+          textContent = '请您回答                                 ';
+        });
       }
     });
   }

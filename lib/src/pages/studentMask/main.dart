@@ -95,6 +95,14 @@ class _StudentCallMaskState extends State<StudentCallMask>
                           ? '获取题目出错，请联系管理员'
                           : part2QuestionTitle,
                     ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 3,
+                      endTime: interval * 4,
+                      textTitle: '结束',
+                      textContent:
+                          '已结束，是否切换角色？                                    ',
+                    ),
                     CenterNextButton(
                       animationController: _animationController,
                       onNextClick: _onNextClick,

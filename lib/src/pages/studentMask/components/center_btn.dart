@@ -30,15 +30,6 @@ class CenterNextButton extends StatelessWidget {
         curve: Curves.fastOutSlowIn,
       ),
     ));
-    final _signUpMoveAnimation =
-        Tween<double>(begin: 0, end: 1.0).animate(CurvedAnimation(
-      parent: animationController,
-      curve: Interval(
-        endTime,
-        endTime * 2 - beginTime,
-        curve: Curves.fastOutSlowIn,
-      ),
-    ));
 
     return Padding(
       padding:
@@ -81,7 +72,6 @@ class CenterNextButton extends StatelessWidget {
                   ),
                   child: PageTransitionSwitcher(
                     duration: Duration(milliseconds: 480),
-                    // reverse: _signUpMoveAnimation.value < 0.7,
                     transitionBuilder: (
                       Widget child,
                       Animation<double> animation,
@@ -95,7 +85,7 @@ class CenterNextButton extends StatelessWidget {
                         child: child,
                       );
                     },
-                    child: animationController.value == 0.9615384615384616
+                    child: animationController.value == 0.8
                         ? InkWell(
                             key: ValueKey('next button'),
                             onTap: onNextClick,
@@ -119,7 +109,7 @@ class CenterNextButton extends StatelessWidget {
                               ),
                             ),
                           )
-                        : _signUpMoveAnimation.value > interval * 2
+                        : animationController.value >= 0.4
                             ? InkWell(
                                 key: ValueKey('next button'),
                                 onTap: onNextClick,
