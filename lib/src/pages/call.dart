@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:agora_flutter_quickstart/src/pages/studentMask/main.dart';
 import 'package:agora_flutter_quickstart/src/pages/teacherMask/main.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/settings.dart';
 
@@ -42,10 +44,6 @@ class _CallPageState extends State<CallPage> {
     super.initState();
     // initialize agora sdk
     initialize();
-    Timer(Duration(seconds: 3), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => TeacherCallMask()));
-    });
   }
 
   Future<void> initialize() async {
@@ -54,6 +52,36 @@ class _CallPageState extends State<CallPage> {
     // ignore: deprecated_member_use
     await _engine.enableWebSdkInteroperability(true);
     await _engine.joinChannel(widget.token, widget.channelName, null, 0);
+    var prefs = await SharedPreferences.getInstance();
+    var username = prefs.getString('nickname');
+    var teacherName = prefs.getString('teacher');
+    var studentName = prefs.getString('student');
+    if (username == teacherName) {
+      Timer(Duration(seconds: 3), () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TeacherCallMask())).then((value) => {
+              Timer(Duration(seconds: 3), () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => StudentCallMask()));
+              })
+            });
+      });
+    }
+    if (username == studentName) {
+      Timer(Duration(seconds: 3), () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StudentCallMask())).then((value) => {
+              Timer(Duration(seconds: 3), () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TeacherCallMask()));
+              })
+            });
+      });
+    }
   }
 
   /// Create agora sdk instance and initialize
