@@ -29,7 +29,7 @@ Future<List> getQuestions(String topic_id) async {
   return res.data['data'];
 }
 
-Future<String> getTopic(String part) async {
+Future<Map> getTopic(String part) async {
   var res = await dio.post('/gettopic', data: {'part': part});
-  return res.data['data']['topicName'];
+  return res.data['data'];
 }

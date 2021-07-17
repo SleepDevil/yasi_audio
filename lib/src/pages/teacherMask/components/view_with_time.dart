@@ -32,12 +32,19 @@ class _TimeViewState extends State<TimeView> {
   _TimeViewState(this.animationController, this.beginTime, this.endTime,
       this.textContent, this.textTitle);
 
-  var leftTime = 60;
+  var leftTime = 120;
   final _streamController = StreamController<int>();
 
   @override
   void initState() {
-    ticker();
+    Timer checkTime;
+    checkTime = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (animationController.value == 0.7692307692307693) {
+        checkTime.cancel();
+        ticker();
+      }
+    });
+
     super.initState();
   }
 
@@ -140,7 +147,7 @@ class _TimeViewState extends State<TimeView> {
                     padding: EdgeInsets.only(
                         left: 64, right: 64, top: 16, bottom: 16),
                     child: StreamBuilder<int>(
-                      initialData: 60,
+                      initialData: 120,
                       stream: _streamController.stream, //
                       builder:
                           (BuildContext context, AsyncSnapshot<int> snapshot) {

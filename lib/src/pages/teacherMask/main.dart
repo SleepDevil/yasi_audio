@@ -7,6 +7,7 @@ import 'package:web_socket_channel/io.dart';
 import 'components/center_btn.dart';
 import 'components/right_to_left_view.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'dart:math';
 
 class CallMask extends StatefulWidget {
   const CallMask({Key key}) : super(key: key);
@@ -18,8 +19,12 @@ class CallMask extends StatefulWidget {
 class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
   AnimationController _animationController;
   var interval = 1 / 26;
-  String teacherName, studentName, identity, topicName;
-  List questionArr;
+  String teacherName, studentName, identity, topicName, part1SecondName;
+  List questionArr, part1thirdArr, part3Arr;
+  var rng = Random();
+  List ThreeToFive = ['major', 'home', 'hometown'];
+
+  // print(rng.nextInt(3));
   // var channel =
   //     IOWebSocketChannel.connect(Uri.parse('ws://8.136.109.187:8081/echo'));
 
@@ -33,7 +38,7 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
       vsync: this,
       duration: Duration(seconds: 12),
     );
-    _animationController.animateTo(interval * 14);
+    _animationController.animateTo(interval * 20);
     super.initState();
   }
 
@@ -48,7 +53,7 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
     teacherName = localPrefs.getString('teacher');
     studentName = localPrefs.getString('student');
     identity = await getUserIdentity(studentName);
-    // 获取part1问题列表
+    // 获取part1-1和1-3问题列表
     var studyArr = await getQuestions('1');
     var workArr = await getQuestions('2');
     if (identity == 'study') {
@@ -59,9 +64,20 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
       questionArr = workArr;
     }
 
+    // 获取part1-2 3-5问题
+    part1SecondName = ThreeToFive[rng.nextInt(3)];
+    var randomThreeToFive = rng.nextInt(3) + 3;
+    var questionThreeToFive = await getQuestions(randomThreeToFive.toString());
+    part1thirdArr = questionThreeToFive;
+    print(part1thirdArr);
+
     // 获取part2 topic
-    topicName = await getTopic('2');
-    print(topicName);
+    var res = await getTopic('2');
+
+    topicName = res['topicName'];
+    // 获取part3问题
+    var part3id = res['id'];
+    part3Arr = await getQuestions(part3id);
     return localPrefs;
   }
 
@@ -113,17 +129,16 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
                       animationController: _animationController,
                       beginTime: interval * 4,
                       endTime: interval * 5,
-                      textTitle: 'Part1',
-                      textContent:
-                          'Let’s talk about your ' + (identity ?? '') + '.',
+                      textTitle: '预备部分',
+                      textContent: 'Ok, and can I see the ID please?',
                     ),
                     CommonView(
                       animationController: _animationController,
                       beginTime: interval * 5,
                       endTime: interval * 6,
-                      textTitle: 'Part1',
+                      textTitle: '预备部分',
                       textContent:
-                          'Question1:' + questionArr[0]['questionName'],
+                          'Now, in the first part I’d like to ask you a series of short questions.',
                     ),
                     CommonView(
                       animationController: _animationController,
@@ -131,7 +146,7 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
                       endTime: interval * 7,
                       textTitle: 'Part1',
                       textContent:
-                          'Question2:' + questionArr[1]['questionName'],
+                          'Let’s talk about your ' + (identity ?? '') + '.',
                     ),
                     CommonView(
                       animationController: _animationController,
@@ -139,16 +154,15 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
                       endTime: interval * 8,
                       textTitle: 'Part1',
                       textContent:
-                          'Question3:' + questionArr[2]['questionName'],
+                          'Question1:' + questionArr[0]['questionName'],
                     ),
                     CommonView(
                       animationController: _animationController,
                       beginTime: interval * 8,
                       endTime: interval * 9,
                       textTitle: 'Part1',
-                      textContent: 'Ok,let’s talk about your ' +
-                          (identity == 'study' ? 'work' : 'study') +
-                          '.',
+                      textContent:
+                          'Question2:' + questionArr[1]['questionName'],
                     ),
                     CommonView(
                       animationController: _animationController,
@@ -156,15 +170,18 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
                       endTime: interval * 10,
                       textTitle: 'Part1',
                       textContent:
-                          'Question1:' + questionArr[3]['questionName'],
+                          'Question3:' + questionArr[2]['questionName'],
                     ),
+                    // home和city
                     CommonView(
                       animationController: _animationController,
                       beginTime: interval * 10,
                       endTime: interval * 11,
                       textTitle: 'Part1',
                       textContent:
-                          'Question2:' + questionArr[4]['questionName'],
+                          'Ok, thank you. Now, I also want to talk about your ' +
+                              part1SecondName +
+                              '.',
                     ),
                     CommonView(
                       animationController: _animationController,
@@ -172,12 +189,61 @@ class _CallMaskState extends State<CallMask> with TickerProviderStateMixin {
                       endTime: interval * 12,
                       textTitle: 'Part1',
                       textContent:
-                          'Question3:' + questionArr[5]['questionName'],
+                          'Question1:' + part1thirdArr[0]['questionName'],
                     ),
                     CommonView(
                       animationController: _animationController,
                       beginTime: interval * 12,
                       endTime: interval * 13,
+                      textTitle: 'Part1',
+                      textContent:
+                          'Question2:' + part1thirdArr[1]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 13,
+                      endTime: interval * 14,
+                      textTitle: 'Part1',
+                      textContent:
+                          'Question3:' + part1thirdArr[2]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 14,
+                      endTime: interval * 15,
+                      textTitle: 'Part1',
+                      textContent: 'Ok,let’s talk about your ' +
+                          (identity == 'study' ? 'work' : 'study') +
+                          '.',
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 15,
+                      endTime: interval * 16,
+                      textTitle: 'Part1',
+                      textContent:
+                          'Question1:' + questionArr[3]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 16,
+                      endTime: interval * 17,
+                      textTitle: 'Part1',
+                      textContent:
+                          'Question2:' + questionArr[4]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 17,
+                      endTime: interval * 18,
+                      textTitle: 'Part1',
+                      textContent:
+                          'Question3:' + questionArr[5]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 18,
+                      endTime: interval * 19,
                       textTitle: 'Part2',
                       textContent:
                           '''Ok, thank you. Now,in this second part, I’m going to give you a topic and I’d like you to talk about it for one to two minutes. Before you talk you’ll have one minute to think about what you’re going to say, you can make some notes if you wish. Do you understand? Ok, so here’sa pen and paper for making notes and here’s your topic.
@@ -186,10 +252,39 @@ All right! Remember you have one to two minutes for this. Don’t worry if I sto
                     ),
                     TimeView(
                       animationController: _animationController,
-                      beginTime: interval * 13,
-                      endTime: interval * 14,
+                      beginTime: interval * 19,
+                      endTime: interval * 20,
                       textTitle: 'Part2',
                       textContent: topicName,
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 20,
+                      endTime: interval * 21,
+                      textTitle: 'Part3',
+                      textContent:
+                          'Ok, Now, in the last part I’d like to ask you one or two more general question related this.',
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 21,
+                      endTime: interval * 22,
+                      textTitle: 'Part3',
+                      textContent: 'Question1:' + part3Arr[0]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 22,
+                      endTime: interval * 23,
+                      textTitle: 'Part3',
+                      textContent: 'Question2:' + part3Arr[1]['questionName'],
+                    ),
+                    CommonView(
+                      animationController: _animationController,
+                      beginTime: interval * 23,
+                      endTime: interval * 24,
+                      textTitle: 'Part3',
+                      textContent: 'Question3:' + part3Arr[2]['questionName'],
                     ),
                     // TopBackSkipView(
                     //   onBackClick: _onBackClick,
@@ -255,7 +350,40 @@ All right! Remember you have one to two minutes for this. Don’t worry if I sto
     } else if (_animationController.value > interval * 13 &&
         _animationController.value <= interval * 14) {
       _animationController?.animateTo(interval * 15);
+    } else if (_animationController.value > interval * 14 &&
+        _animationController.value <= interval * 15) {
+      _animationController?.animateTo(interval * 16);
+    } else if (_animationController.value > interval * 15 &&
+        _animationController.value <= interval * 16) {
+      _animationController?.animateTo(interval * 17);
+    } else if (_animationController.value > interval * 16 &&
+        _animationController.value <= interval * 17) {
+      _animationController?.animateTo(interval * 18);
+    } else if (_animationController.value > interval * 17 &&
+        _animationController.value <= interval * 18) {
+      _animationController?.animateTo(interval * 19);
+    } else if (_animationController.value > interval * 18 &&
+        _animationController.value <= interval * 19) {
+      _animationController?.animateTo(interval * 20);
+    } else if (_animationController.value > interval * 19 &&
+        _animationController.value <= interval * 20) {
+      _animationController?.animateTo(interval * 21);
+    } else if (_animationController.value > interval * 20 &&
+        _animationController.value <= interval * 21) {
+      _animationController?.animateTo(interval * 22);
+    } else if (_animationController.value > interval * 21 &&
+        _animationController.value <= interval * 22) {
+      _animationController?.animateTo(interval * 23);
+    } else if (_animationController.value > interval * 22 &&
+        _animationController.value <= interval * 23) {
+      _animationController?.animateTo(interval * 24);
+    } else if (_animationController.value > interval * 23 &&
+        _animationController.value <= interval * 24) {
+      _animationController?.animateTo(interval * 25);
+    } else if (_animationController.value > interval * 24 &&
+        _animationController.value <= interval * 25) {
+      _animationController?.animateTo(interval * 26);
     }
-    print(_animationController.value <= interval);
+    // print(_animationController.value <= interval);
   }
 }
