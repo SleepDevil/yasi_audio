@@ -96,6 +96,7 @@ class _CallPageState extends State<CallPage> {
     _engine.setEventHandler(RtcEngineEventHandler(
       error: (code) {
         setState(() {
+          print(code);
           final info = '出错了: $code，请联系管理员';
           _infoStrings.add(info);
         });

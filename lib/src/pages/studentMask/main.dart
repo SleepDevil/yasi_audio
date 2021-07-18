@@ -1,12 +1,11 @@
-import 'package:agora_flutter_quickstart/src/pages/teacherMask/components/view.dart';
-import 'package:agora_flutter_quickstart/src/pages/teacherMask/components/view_with_time.dart';
+import 'dart:async';
+import 'package:agora_flutter_quickstart/src/pages/studentMask/components/view.dart';
+import 'package:agora_flutter_quickstart/src/pages/studentMask/components/view_with_time.dart';
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_socket_channel/io.dart';
 import 'components/center_btn.dart';
 import 'components/right_to_left_view.dart';
-import 'package:web_socket_channel/status.dart' as status;
 
 class StudentCallMask extends StatefulWidget {
   const StudentCallMask({Key key}) : super(key: key);
@@ -20,22 +19,32 @@ class _StudentCallMaskState extends State<StudentCallMask>
   AnimationController _animationController;
   var interval = 1 / 5;
   String teacherName, studentName, part2QuestionTitle;
+  var leftTime = 240;
+  Timer _timer;
 
-  var channel =
-      IOWebSocketChannel.connect(Uri.parse('ws://8.136.109.187:8081/echo'));
+  void ticker() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      leftTime -= 1;
+      if (leftTime <= 0) {
+        _timer.cancel();
+      }
+    });
+  }
 
   @override
   void initState() {
-    channel.stream.listen((message) {
-      print(message);
-      channel.sink.add('received!');
-      channel.sink.close(status.goingAway);
-    });
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 8),
     );
     _animationController.animateTo(interval * 1);
+    Timer checkTime;
+    checkTime = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_animationController.value == 0.4) {
+        checkTime.cancel();
+        ticker();
+      }
+    });
     super.initState();
   }
 
@@ -123,7 +132,8 @@ class _StudentCallMaskState extends State<StudentCallMask>
         _animationController.value <= interval) {
       _animationController?.animateTo(interval * 2);
     } else if (_animationController.value > interval &&
-        _animationController.value <= interval * 2) {
+        _animationController.value <= interval * 2 &&
+        leftTime <= 0) {
       _animationController?.animateTo(interval * 3);
     } else if (_animationController.value > interval * 2 &&
         _animationController.value <= interval * 3) {

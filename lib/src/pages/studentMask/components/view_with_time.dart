@@ -37,9 +37,10 @@ class _TimeViewState extends State<TimeView> {
 
   @override
   void initState() {
+    print('timeinit执行了============');
     Timer checkTime;
     checkTime = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (animationController.value == 0.7692307692307693) {
+      if (animationController.value == 0.6000000000000001) {
         checkTime.cancel();
         ticker();
       }
@@ -50,7 +51,6 @@ class _TimeViewState extends State<TimeView> {
 
   @override
   void dispose() {
-    _streamController.close();
     super.dispose();
   }
 
