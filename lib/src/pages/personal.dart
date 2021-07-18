@@ -200,10 +200,10 @@ class _PersonalPageState extends State<PersonalPage> {
                 title: Text('个人主页'),
               ),
               body: Container(
-                // decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //         image: AssetImage('lib/assets/user_bgc.jpg'),
-                //         fit: BoxFit.cover)),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('lib/assets/user_bgc.jpg'),
+                        fit: BoxFit.cover)),
                 padding: EdgeInsets.only(left: 20.0),
                 child: Stack(
                   children: [
