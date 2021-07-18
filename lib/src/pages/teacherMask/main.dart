@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 import 'components/center_btn.dart';
 import 'components/right_to_left_view.dart';
-import 'package:web_socket_channel/status.dart' as status;
 import 'dart:math';
 
 class TeacherCallMask extends StatefulWidget {
