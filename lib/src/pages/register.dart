@@ -96,327 +96,329 @@ class _RegisterPageState extends State<RegisterPage> {
         appBar: AppBar(
           title: Text('注册'),
         ),
-        body: SingleChildScrollView(
-          child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: 120.0,
-              ),
-              child: Container(
-                  padding: EdgeInsets.only(top: 30, right: 20),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('用户名',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: TextFormField(
-                                controller: nickname,
-                                keyboardType: TextInputType.name,
-                                decoration: const InputDecoration(
-                                  hintText: '用户名长度为4-12个字符',
-                                ),
-                                validator: (value) {
-                                  if (value.length < 4 || value.length > 12) {
-                                    return '用户名长度为4-12个字符';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('账号',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: TextFormField(
-                                controller: username,
-                                keyboardType: TextInputType.name,
-                                decoration: const InputDecoration(
-                                  hintText: '请输入账号',
-                                ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '账号不能为空';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('密码',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: TextFormField(
-                                controller: password,
-                                keyboardType: TextInputType.name,
-                                decoration:
-                                    const InputDecoration(hintText: '请输入密码'),
-                                obscureText: true,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请输入密码';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('确认密码',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: TextFormField(
-                                controller: repeatPassword,
-                                keyboardType: TextInputType.name,
-                                decoration:
-                                    const InputDecoration(hintText: '请确认密码'),
-                                obscureText: true,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请确认密码';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('当前职业',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                              child: Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Row(
-                              children: [
-                                Text('学生'),
-                                Radio(
-                                  value: 1,
-                                  groupValue: groupValue,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      groupValue = val;
-                                    });
-                                  },
-                                ),
-                                Text('已工作'),
-                                Radio(
-                                  value: 2,
-                                  groupValue: groupValue,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      groupValue = val;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('成绩',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: TextFormField(
-                                controller: yasiScore,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                    hintText: '雅思口语考试最高成绩未参加过填0'),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请输入您的口语成绩';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil().setWidth(100),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: Center(
-                                child: Text('邀请码',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: TextFormField(
-                                controller: invitationCode,
-                                keyboardType: TextInputType.name,
-                                decoration: const InputDecoration(
-                                  hintText: '请输入您的邀请码',
-                                ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return '请输入您的邀请码';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(top: 15),
-                          child: Center(
-                            child: Text.rich(
-                              TextSpan(text: '我已阅读并同意', children: [
-                                TextSpan(
-                                    text: '用户隐私协议',
-                                    style: TextStyle(
-                                      color: Color(0xFF00CED2),
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        await showDialog(
-                                            context: context,
-                                            barrierDismissible: true,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text('用户协议和隐私政策'),
-                                                content: Text(
-                                                    'sasasahjsahjiasjhsah'),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                15))),
-                                              );
-                                            });
-                                      })
-                              ]),
-                            ),
-                          )),
-                      Container(
-                        padding: EdgeInsets.only(top: 5),
+        body: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('lib/assets/login_bgc.jpg'),
+                    fit: BoxFit.cover)),
+            padding: EdgeInsets.only(top: 30, right: 20),
+            child: Form(
+              key: _formKey,
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
                         child: Center(
-                          child: Text.rich(TextSpan(text: '已有账号？', children: [
-                            TextSpan(
-                                text: '立即登录',
-                                style: TextStyle(color: Color(0xFF00CED2)),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return LoginPage();
-                                    }));
-                                  })
-                          ])),
+                          child: Text('用户名',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
                         ),
                       ),
-                      Container(
-                        child: ElevatedButton(
-                          onPressed: register,
-                          child: Text('注册'),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          controller: nickname,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            hintText: '用户名长度为4-12个字符',
+                          ),
+                          validator: (value) {
+                            if (value.length < 4 || value.length > 12) {
+                              return '用户名长度为4-12个字符';
+                            }
+                            return null;
+                          },
                         ),
                       ),
-                    ]),
-                  ))),
-        ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Center(
+                          child: Text('账号',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          controller: username,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            hintText: '请输入账号',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return '账号不能为空';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Center(
+                          child: Text('密码',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          controller: password,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(hintText: '请输入密码'),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return '请输入密码';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Center(
+                          child: Text('确认密码',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          controller: repeatPassword,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(hintText: '请确认密码'),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return '请确认密码';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Center(
+                          child: Text('当前职业',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        child: Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Row(
+                        children: [
+                          Text('学生'),
+                          Radio(
+                            value: 1,
+                            groupValue: groupValue,
+                            onChanged: (val) {
+                              setState(() {
+                                groupValue = val;
+                              });
+                            },
+                          ),
+                          Text('已工作'),
+                          Radio(
+                            value: 2,
+                            groupValue: groupValue,
+                            onChanged: (val) {
+                              setState(() {
+                                groupValue = val;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ))
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Center(
+                          child: Text('成绩',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          controller: yasiScore,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              hintText: '雅思口语考试最高成绩未参加过填0'),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return '请输入您的口语成绩';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: ScreenUtil().setWidth(100),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Center(
+                          child: Text('邀请码',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              )),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          controller: invitationCode,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            hintText: '请输入您的邀请码',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return '请输入您的邀请码';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Center(
+                      child: Text.rich(
+                        TextSpan(text: '我已阅读并同意', children: [
+                          TextSpan(
+                              text: '用户隐私协议',
+                              style: TextStyle(
+                                color: Color(0xFF00CED2),
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  await showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('用户协议和隐私政策'),
+                                          content: Text('sasasahjsahjiasjhsah'),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(15))),
+                                        );
+                                      });
+                                })
+                        ]),
+                      ),
+                    )),
+                Container(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Center(
+                    child: Text.rich(TextSpan(text: '已有账号？', children: [
+                      TextSpan(
+                          text: '立即登录',
+                          style: TextStyle(color: Color(0xFF00CED2)),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return LoginPage();
+                              }));
+                            })
+                    ])),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(20.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 40.0,
+                    child: ElevatedButton(
+                      onPressed: register,
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(35))),
+                      ),
+                      child: Text('注册', style: TextStyle(fontSize: 18.0)),
+                    ),
+                  ),
+                ),
+              ]),
+            )),
       ),
     );
   }

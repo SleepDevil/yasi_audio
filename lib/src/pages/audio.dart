@@ -31,53 +31,64 @@ class AudioState extends State<AudioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('口语'),
-      ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          height: 400,
-          child: Column(
-            children: <Widget>[
-              Row(
+        appBar: AppBar(
+          title: Text('口语'),
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('lib/assets/audio_bgc.jpg'),
+                  fit: BoxFit.cover)),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              height: 400,
+              child: Column(
                 children: <Widget>[
-                  Expanded(
-                      child: Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      controller: _channelController,
-                      decoration: InputDecoration(
-                        hintText: '请输入房间号',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return '房间号不能为空';
-                        }
-                        return null;
-                      },
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                          child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _channelController,
+                          decoration: InputDecoration(
+                              hintText: '请输入房间号',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(40.0))),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return '房间号不能为空';
+                            }
+                            return null;
+                          },
+                        ),
+                      ))
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(35))),
+                            ),
+                            onPressed: onJoin,
+                            child: Text('进入'),
+                          ),
+                        )
+                      ],
                     ),
-                  ))
+                  )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: onJoin,
-                        child: Text('进入'),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Future getToken() async {
