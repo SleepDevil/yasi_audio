@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:agora_flutter_quickstart/src/pages/studentMask/components/view.dart';
 import 'package:agora_flutter_quickstart/src/pages/studentMask/components/view_with_time.dart';
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
@@ -8,18 +9,24 @@ import 'components/center_btn.dart';
 import 'components/right_to_left_view.dart';
 
 class StudentCallMask extends StatefulWidget {
-  const StudentCallMask({Key key}) : super(key: key);
+  final int part2QuestionIndex;
+  const StudentCallMask({Key key, @required this.part2QuestionIndex})
+      : super(key: key);
 
   @override
-  _StudentCallMaskState createState() => _StudentCallMaskState();
+  _StudentCallMaskState createState() =>
+      _StudentCallMaskState(part2QuestionIndex);
 }
 
 class _StudentCallMaskState extends State<StudentCallMask>
     with TickerProviderStateMixin {
+  var part2questionIndex;
+  _StudentCallMaskState(this.part2questionIndex);
+
   AnimationController _animationController;
   var interval = 1 / 5;
   String teacherName, studentName, part2QuestionTitle;
-  var leftTime = 240;
+  var leftTime = 2;
   Timer _timer;
 
   void ticker() {
@@ -33,6 +40,8 @@ class _StudentCallMaskState extends State<StudentCallMask>
 
   @override
   void initState() {
+    print('part2QuestionIndex===============');
+    print(part2questionIndex);
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 8),
@@ -54,7 +63,7 @@ class _StudentCallMaskState extends State<StudentCallMask>
     super.dispose();
   }
 
-  Future<String> getPart2Question(String RoomId) async {
+  Future getPart2Question(String RoomId) async {
     var res = await dio.post('/part2question', data: {'RoomId': RoomId});
     return res.data['data'];
   }
@@ -64,7 +73,9 @@ class _StudentCallMaskState extends State<StudentCallMask>
     // teacherName = localPrefs.getString('teacher');
     // studentName = localPrefs.getString('student');
     print(localPrefs.getString('roomid'));
-    part2QuestionTitle = await getPart2Question(localPrefs.getString('roomid'));
+    var resArr = await getPart2Question(localPrefs.getString('roomid'));
+    resArr = jsonDecode(resArr);
+    part2QuestionTitle = resArr[part2questionIndex]['topicName'];
     print(part2QuestionTitle);
     return localPrefs;
   }

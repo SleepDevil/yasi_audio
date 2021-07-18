@@ -74,6 +74,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
         ],
       ),
       body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('lib/assets/audio_bgc.jpg'),
+                  fit: BoxFit.cover)),
           child: Padding(
               padding: EdgeInsets.all(10.0),
               child: Form(
@@ -100,9 +104,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                             child: TextFormField(
                               controller: targetscore,
                               keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                hintText: '请输入目标口语成绩',
-                              ),
+                              decoration: InputDecoration(
+                                  hintText: '请输入目标口语成绩',
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(40.0))),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return '口语成绩不能为空';
@@ -130,13 +136,15 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            padding: EdgeInsets.all(10.0),
                             child: TextFormField(
                               controller: roomid,
                               keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                hintText: '请输入预定房间号',
-                              ),
+                              decoration: InputDecoration(
+                                  hintText: '请输入预定房间号',
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(40.0))),
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return '房间号不能为空';

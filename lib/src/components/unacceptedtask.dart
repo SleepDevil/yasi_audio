@@ -1,4 +1,5 @@
 import 'package:agora_flutter_quickstart/src/pages/login.dart';
+import 'package:agora_flutter_quickstart/src/utils/api.dart';
 import 'package:agora_flutter_quickstart/src/utils/dio.dart';
 import 'package:agora_flutter_quickstart/src/utils/toast.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,8 @@ class _UnAcceptedTaskState extends State<UnAcceptedTask> {
       'BattleTime': BattleTime,
       'Founder': CreatedBy
     });
+    var topicRes = await getTopicRedis('2', RoomId);
+    print(topicRes);
     if (res.data['code'] != 0) {
       showToast(res.data['msg']);
       return;

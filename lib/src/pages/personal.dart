@@ -245,14 +245,23 @@ class _PersonalPageState extends State<PersonalPage> {
                         Container(
                             alignment: Alignment.center,
                             child: Center(
+                                child: SizedBox(
+                              width: 200.0,
+                              height: 40.0,
                               child: ElevatedButton(
                                 onPressed: letUserConfirm,
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
-                                child: Text('退出登录'),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.red),
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(35))),
+                                ),
+                                child: Text('退出登录',
+                                    style: TextStyle(fontSize: 18.0)),
                               ),
-                            ))
+                            )))
                       ],
                     )
                   ],
@@ -261,6 +270,10 @@ class _PersonalPageState extends State<PersonalPage> {
             );
           } else {
             return Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('lib/assets/user_bgc.jpg'),
+                      fit: BoxFit.cover)),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {

@@ -61,10 +61,14 @@ class _CallPageState extends State<CallPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TeacherCallMask())).then((value) => {
+                builder: (context) =>
+                    TeacherCallMask(part2QuestionIndex: 0))).then((value) => {
               Timer(Duration(seconds: 3), () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => StudentCallMask()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            StudentCallMask(part2QuestionIndex: 1)));
               })
             });
       });
@@ -74,10 +78,14 @@ class _CallPageState extends State<CallPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => StudentCallMask())).then((value) => {
+                builder: (context) =>
+                    StudentCallMask(part2QuestionIndex: 0))).then((value) => {
               Timer(Duration(seconds: 3), () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TeacherCallMask()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TeacherCallMask(part2QuestionIndex: 1)));
               })
             });
       });

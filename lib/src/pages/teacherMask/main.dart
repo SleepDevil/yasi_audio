@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:agora_flutter_quickstart/src/pages/teacherMask/components/view.dart';
 import 'package:agora_flutter_quickstart/src/pages/teacherMask/components/view_with_time.dart';
 import 'package:agora_flutter_quickstart/src/utils/api.dart';
+import 'package:agora_flutter_quickstart/src/utils/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
@@ -9,14 +12,21 @@ import 'components/right_to_left_view.dart';
 import 'dart:math';
 
 class TeacherCallMask extends StatefulWidget {
-  const TeacherCallMask({Key key}) : super(key: key);
+  final int part2QuestionIndex;
+
+  TeacherCallMask({Key key, @required this.part2QuestionIndex})
+      : super(key: key);
 
   @override
-  _TeacherCallMaskState createState() => _TeacherCallMaskState();
+  _TeacherCallMaskState createState() =>
+      _TeacherCallMaskState(part2QuestionIndex);
 }
 
 class _TeacherCallMaskState extends State<TeacherCallMask>
     with TickerProviderStateMixin {
+  var part2questionIndex;
+  _TeacherCallMaskState(this.part2questionIndex);
+
   AnimationController _animationController;
   var interval = 1 / 26;
   String teacherName, studentName, identity, topicName, part1SecondName;
@@ -24,17 +34,21 @@ class _TeacherCallMaskState extends State<TeacherCallMask>
   var rng = Random();
   List ThreeToFive = ['major', 'home', 'hometown'];
 
-  var channel =
-      IOWebSocketChannel.connect(Uri.parse('ws://8.136.109.187:8081/echo'));
-
   @override
   void initState() {
+    print('part2questionIndex=============');
+    print(part2questionIndex);
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 12),
     );
     _animationController.animateTo(interval * 1);
     super.initState();
+  }
+
+  Future getPart2Question(String RoomId) async {
+    var res = await dio.post('/part2question', data: {'RoomId': RoomId});
+    return res.data['data'];
   }
 
   @override
@@ -66,12 +80,14 @@ class _TeacherCallMaskState extends State<TeacherCallMask>
     part1thirdArr = questionThreeToFive;
 
     // 获取part2 topic
-    var res = await getTopicRedis('2', localPrefs.getString('roomid'));
-
-    topicName = res['topicName'];
-    channel.sink.add(topicName);
+    var res = await getPart2Question(localPrefs.getString('roomid'));
+    print('====================');
+    print(jsonDecode(res));
+    res = jsonDecode(res);
+    print('====================');
+    topicName = res[part2questionIndex]['topicName'];
     // 获取part3问题
-    var part3id = res['id'];
+    var part3id = res[part2questionIndex]['id'];
     part3Arr = await getQuestions(part3id);
     return localPrefs;
   }
@@ -265,21 +281,24 @@ All right! Remember you have one to two minutes for this. Don’t worry if I sto
                       beginTime: interval * 21,
                       endTime: interval * 22,
                       textTitle: 'Part3',
-                      textContent: 'Question1:' + part3Arr[0]['questionName'],
+                      textContent:
+                          'Question1:' + (part3Arr[0]['questionName'] ?? ''),
                     ),
                     CommonView(
                       animationController: _animationController,
                       beginTime: interval * 22,
                       endTime: interval * 23,
                       textTitle: 'Part3',
-                      textContent: 'Question2:' + part3Arr[1]['questionName'],
+                      textContent:
+                          'Question2:' + (part3Arr[1]['questionName'] ?? ''),
                     ),
                     CommonView(
                       animationController: _animationController,
                       beginTime: interval * 23,
                       endTime: interval * 24,
                       textTitle: 'Part3',
-                      textContent: 'Question3:' + part3Arr[2]['questionName'],
+                      textContent:
+                          'Question3:' + (part3Arr[2]['questionName'] ?? ''),
                     ),
                     CommonView(
                       animationController: _animationController,
