@@ -76,7 +76,10 @@ class CommonView extends StatelessWidget {
                 position: _relaxAnimation,
                 child: Text(
                   textTitle ?? '',
-                  style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Times'),
                 ),
               ),
               SlideTransition(
@@ -87,6 +90,7 @@ class CommonView extends StatelessWidget {
                   child: Text(
                     textContent ?? '',
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontFamily: 'Times'),
                   ),
                 ),
               ),
