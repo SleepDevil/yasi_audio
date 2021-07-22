@@ -120,6 +120,10 @@ class AudioState extends State<AudioPage> {
         return;
       }
       var prefs = await SharedPreferences.getInstance();
+      if (prefs.getString('nickname') == null) {
+        showToast('请先登录！');
+        return;
+      }
       if (_channelController.text.isNotEmpty) {
         await _handleCameraAndMic(Permission.microphone);
         // push video page with given channel name

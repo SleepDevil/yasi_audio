@@ -26,7 +26,7 @@ class _StudentCallMaskState extends State<StudentCallMask>
   AnimationController _animationController;
   var interval = 1 / 5;
   String teacherName, studentName, part2QuestionTitle;
-  var leftTime = 2;
+  var leftTime = 240;
   Timer _timer;
 
   void ticker() {

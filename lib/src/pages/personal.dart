@@ -123,6 +123,7 @@ class _PersonalPageState extends State<PersonalPage> {
                 onPressed: () async {
                   var prefs = await SharedPreferences.getInstance();
                   await prefs.remove('token');
+                  await prefs.remove('nickname');
                   showToast('登出成功');
                   Navigator.of(context).pop(true); //关闭对话框
                   setState(() {});
